@@ -14,15 +14,16 @@ This script is designed to connect to a network drive, preferably using credenti
 Once the export is complete and the network drive is connected, this script uses 7-Zip to encrypt and compress the export while uploading it to the network drive in 4.99 GB archive split-files. After that it deletes the uncompressed export.
 
 **Make sure review and update:**
-*The $ExportPath directory: `"C:\Users\Public\Documents\Hyper-V\Export"`
 
-*The $NetworkDrive letter: `"U:"`
+ - The $ExportPath directory: `"C:\Users\Public\Documents\Hyper-V\Export"`
 
-*The network drive path: `"\\169.254.127.127\Hyper-V Exports"`
+ - The $NetworkDrive letter: `"U:"`
 
-*The network drive Backup Operator username and password: `"MyServer\MyUsername", "MyPassword"`
+ - The network drive path: `"\\169.254.127.127\Hyper-V Exports"`
 
-*The 7-Zip encryption password (keep the double-double quotation marks): `""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""`
+ - The network drive Backup Operator username and password: `"MyServer\MyUsername", "MyPassword"`
+
+ - The 7-Zip encryption password (keep the double-double quotation marks): `""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""`
 
 
 With some modification this script can do live exports which are supported on Server 2016 and Server 2019.
