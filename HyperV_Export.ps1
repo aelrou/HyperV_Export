@@ -13,6 +13,8 @@ Param([string]$VMID)
     For example: If drive D: is a SATA SSD containing Hyper-V VHDX files, and drive C: is
     a SATA SSD that does not have enough free-space to save Hyper-V exports, install
     another SATA SSD as drive E: to save Hyper-V exports.
+
+    Or maybe you've got converged storage with 10 gigabit uplinks and don't care.
 #>  
 $ExportPath = "C:\Users\Public\Documents\Hyper-V\Export"
 
@@ -61,7 +63,7 @@ while (1) {
     LogWrite "Connecting drive $($NetworkDrive)\"
     try {
         # I am not using New-PSDrive here because New-PSDrive is bafflingly unreliable with network SMB.
-        (New-Object -ComObject WScript.Network).MapNetworkDrive($NetworkDrive, "\\BackBlaze\Hyper-V Exports", $false, "BackBlaze\MyUsername", "MyPassword")
+        (New-Object -ComObject WScript.Network).MapNetworkDrive($NetworkDrive, "\\169.254.127.127\Hyper-V Exports", $false, "MyServer\MyUsername", "MyPassword")
         # TODO - Implement PSCredential for providing the username and password.
     }
     catch {
@@ -91,8 +93,9 @@ try {
 			Start-VM -Name $VMName -ErrorAction Stop
 		}
 		$DateTimeUpload = Get-Date -format "yyyy-MM-dd-THHmm"
-		LogWrite "Encrypt, compress, and upload ""$($VMName)_$($DateTimeUpload).7z"" to drive $($NetworkDrive)\" 
-		Start-Process -NoNewWindow -Wait -FilePath "C:\Program Files\7-Zip\7z.exe" -ArgumentList "a", "-ms=on", "-v5119m", "-mx1", "-mmt7", "-p""1234567890AbCdEfGhIjKlMnOpQrStUvWxYz""", """$($NetworkDrive)\$($VMName)\$($VMName)_$($DateTimeUpload).7z""", """$($ExportPath)\$($DateTimeExport)\$($VMName)\*""" -RedirectStandardOutput "$($ExportPath)\$($DateTimeStart)\stdout.log" -RedirectStandardError "$($ExportPath)\$($DateTimeStart)\stderr.log" -ErrorAction Stop
+		LogWrite "Encrypt, compress, and upload ""$($VMName)_$($DateTimeUpload).7z"" to drive $($NetworkDrive)\"
+		Start-Process -NoNewWindow -Wait -FilePath "C:\Program Files\7-Zip\7z.exe" -ArgumentList "a", "-ms=on", "-v5119m", "-mx1", "-mmt7", "-p""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""", """$($NetworkDrive)\$($VMName)\$($VMName)_$($DateTimeUpload).7z""", """$($ExportPath)\$($DateTimeExport)\$($VMName)\*""" -RedirectStandardOutput "$($ExportPath)\$($DateTimeStart)\stdout.log" -RedirectStandardError "$($ExportPath)\$($DateTimeStart)\stderr.log" -ErrorAction Stop
+        # TODO - Implement PSCredential for providing the encryption password.
 		LogWrite (Get-Content -Path "$($ExportPath)\$($DateTimeStart)\stdout.log")
 		$DateTimeStop = Get-Date -format "yyyy-MM-dd-THHmm"
 		LogWrite "Upload ended $($DateTimeStop)"
