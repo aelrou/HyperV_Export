@@ -23,7 +23,8 @@ Once the export is complete and the network drive is connected, this script uses
 
  - The network drive Backup Operator username and password: `"MyServer\MyUsername", "MyPassword"`
 
- - The 7-Zip encryption password (keep the double-double quotation marks): `""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""`
+ - The 7-Zip thread count: `"-mmt7"` -mmt8 will use 100% of an 8-core CPU. -mmt4 will use 50% of an 8-core CPU.
 
+ - The 7-Zip encryption password (keep the double "" quotation marks): `""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""`
 
 With some modification this script can do live exports which are supported on Server 2016 and Server 2019.
