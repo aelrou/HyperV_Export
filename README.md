@@ -1,2 +1,2 @@
 # HyperV_Export
-PowerShell script to export, encrypt, compress, and upload and Hyper-V virtual machine
+PowerShell script to export, encrypt, compress, and upload a Hyper-V virtual machine
