@@ -8,10 +8,13 @@ This PowerShell script is designed to run as a scheduled task with Administrativ
 Live exports do not seem to be supported on Windows Server 2012 (not R2), so a VM must be either saved or shutdown in order to export it. This script saves and exports a VM, then starts it again if it was running originally.
 
 To ensure that scheduled exports continue if a VM name gets changed, this script requires a VMID argument instead of a VM name.
+`"powershell.exe" -File "C:\HyperV_Export.ps1" -VMID "9623d59a-a9e9-40cf-a0fd-913248491d50"`
+
+To get a VMID run this in PowerShell: `Get-VM | Select-Object VMName, VMID`
 
 This script is designed to connect to a network drive, preferably using credentials of an account in the Backup Operator group.
 
-Once the export is complete and the network drive is connected, this script uses 7-Zip to encrypt and compress the export while uploading it to the network drive in 4.99 GB archive split-files. After that it deletes the uncompressed export.
+Once the export is complete and the network drive is connected, this script uses [7-Zip](https://www.7-zip.org/) to encrypt and compress the export while uploading it to the network drive in [4.99 GB](https://www.backblaze.com/b2/docs/large_files.html) archive split-files. After that it deletes the uncompressed export.
 
 **Make sure review and update:**
 
@@ -23,8 +26,8 @@ Once the export is complete and the network drive is connected, this script uses
 
  - The network drive Backup Operator username and password: `"MyServer\MyUsername", "MyPassword"`
 
- - The [7-Zip](https://www.7-zip.org/) thread count: `"-mmt7"` -mmt8 will use 100% of an 8-core CPU. -mmt4 will use 50% of an 8-core CPU.
+ - The 7-Zip thread count: `"-mmt7"` -mmt8 will use 100% of an 8-core CPU. -mmt4 will use 50% of an 8-core CPU.
 
- - The [7-Zip](https://www.7-zip.org/) encryption password (keep the double "" quotation marks): `""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""`
+ - The 7-Zip encryption password (keep the double "" quotation marks): `""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""`
 
 With some modification this script can do live exports which are supported on Server 2016 and Server 2019.
