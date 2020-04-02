@@ -14,14 +14,14 @@ Live exports are not supported on Windows Server 2012 *(not R2)*, so a VM must b
 
 This script is designed to connect to a network drive, preferably using credentials of an account in the Backup Operator group.
 
-Once an export is complete and the network drive is connected, [7-Zip](https://www.7-zip.org/) is used to encrypt and compress the export while uploading it to the network drive in a [4.99 GB](https://www.backblaze.com/b2/docs/large_files.html) split-file archive. After that it deletes the uncompressed export.
+Once an export is complete and the network drive is connected, [7-Zip](https://www.7-zip.org/) is used to encrypt and compress the export while uploading it to the network drive in a [4.99 GB](https://www.backblaze.com/b2/docs/large_files.html) split-file archive. After that it deletes the uncompressed export.  
 
-**Make sure review and update:**  
+# Please review and update as necessary:  
  - The $ExportPath directory: `"C:\Users\Public\Documents\Hyper-V\Export"`  
  - The $NetworkDrive letter: `"U:"`  
  - The network drive path: `"\\169.254.127.127\Hyper-V Exports"`  
- - The network drive Backup Operator username and password: `"MyServer\MyUsername", "MyPassword"`  
- - The 7-Zip thread count: `"-mmt7"` -mmt8 will use 100% of an 8-core CPU. -mmt4 will use 50% of an 8-core CPU.  
+ - The network drive username and password: `"MyServer\MyUsername", "MyPassword"`  
+ - The 7-Zip thread count: `"-mmt7"` uses 7 CPU cores. `"-mmt4"` uses 4 cores or 50% of an 8-core CPU.  
  - The 7-Zip encryption password (keep the double "" quotation marks): `""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""`  
 
-With some modification this script can do live exports which are supported on Server 2012 **R2**, Server 2016, and Server 2019.
+With minor modification this script will do live exports which are supported on Server 2012 **R2**, Server 2016, and Server 2019.
