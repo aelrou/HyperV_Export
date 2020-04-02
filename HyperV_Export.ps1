@@ -20,8 +20,9 @@ $ExportPath = "C:\Users\Public\Documents\Hyper-V\Export"
 
 if (!($VMID)) {
     Write-Host "VMID is required."
-	Write-Host $(Get-VM | Select-Object VMName, VMID)
-    Write-Host "powershell.exe -File ""C:\HyperV_Export.ps1"" -VMID ""9623d59a-a9e9-40cf-a0fd-913248491d50"""
+    Write-Host $(Get-VM | Select-Object VMName, VMID)
+    Write-Host "CMD> ""powershell.exe"" -File ""C:\HyperV_Export.ps1"" -VMID ""9623d59a-a9e9-40cf-a0fd-913248491d50"""
+    Write-Host "PowerShell> & ""C:\HyperV_Export.ps1"" -VMID ""9623d59a-a9e9-40cf-a0fd-913248491d50"""
     Exit
 }
 $DateTimeStart = Get-Date -format "yyyy-MM-dd-THHmm"
@@ -75,33 +76,33 @@ while (1) {
 }
 
 try {
-	$State = $(Get-VM -Id $VMID).State
-	if ($(Get-VM -Id $VMID).State -eq "paused") {
-		LogWrite "Resume $($VMName)"
-		Start-VM -Name $VMName -ErrorAction Stop
-	}
-	if ($(Get-VM -Id $VMID).State -eq "running") {
-		LogWrite "Save state of $($VMName)"
-		Save-VM -Name $VMName -ErrorAction Stop
-	}
-	if ($(Get-VM -Id $VMID).State -eq "off" -or $(Get-VM -Id $VMID).State -eq "saved") {
-	    $DateTimeExport = Get-Date -format "yyyy-MM-dd-THHmm"
-		LogWrite "Export $($VMName) to ""$($ExportPath)\$($DateTimeExport)"""
-		Export-VM -Name $VMName -Path "$($ExportPath)\$($DateTimeExport)" -ErrorAction Stop
-		if ($State -eq "running") {
-			LogWrite "Startup $($VMName)"
-			Start-VM -Name $VMName -ErrorAction Stop
-		}
-		$DateTimeUpload = Get-Date -format "yyyy-MM-dd-THHmm"
-		LogWrite "Encrypt, compress, and upload ""$($VMName)_$($DateTimeUpload).7z"" to drive $($NetworkDrive)\"
-		Start-Process -NoNewWindow -Wait -FilePath "C:\Program Files\7-Zip\7z.exe" -ArgumentList "a", "-ms=on", "-v5119m", "-mx1", "-mmt7", "-p""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""", """$($NetworkDrive)\$($VMName)\$($VMName)_$($DateTimeUpload).7z""", """$($ExportPath)\$($DateTimeExport)\$($VMName)\*""" -RedirectStandardOutput "$($ExportPath)\$($DateTimeStart)\stdout.log" -RedirectStandardError "$($ExportPath)\$($DateTimeStart)\stderr.log" -ErrorAction Stop
+    $State = $(Get-VM -Id $VMID).State
+    if ($(Get-VM -Id $VMID).State -eq "paused") {
+        LogWrite "Resume $($VMName)"
+        Start-VM -Name $VMName -ErrorAction Stop
+    }
+    if ($(Get-VM -Id $VMID).State -eq "running") {
+        LogWrite "Save state of $($VMName)"
+        Save-VM -Name $VMName -ErrorAction Stop
+    }
+    if ($(Get-VM -Id $VMID).State -eq "off" -or $(Get-VM -Id $VMID).State -eq "saved") {
+        $DateTimeExport = Get-Date -format "yyyy-MM-dd-THHmm"
+        LogWrite "Export $($VMName) to ""$($ExportPath)\$($DateTimeExport)"""
+        Export-VM -Name $VMName -Path "$($ExportPath)\$($DateTimeExport)" -ErrorAction Stop
+        if ($State -eq "running") {
+            LogWrite "Startup $($VMName)"
+            Start-VM -Name $VMName -ErrorAction Stop
+        }
+        $DateTimeUpload = Get-Date -format "yyyy-MM-dd-THHmm"
+        LogWrite "Encrypt, compress, and upload ""$($VMName)_$($DateTimeUpload).7z"" to drive $($NetworkDrive)\"
+        Start-Process -NoNewWindow -Wait -FilePath "C:\Program Files\7-Zip\7z.exe" -ArgumentList "a", "-ms=on", "-v5119m", "-mx1", "-mmt7", "-p""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""", """$($NetworkDrive)\$($VMName)\$($VMName)_$($DateTimeUpload).7z""", """$($ExportPath)\$($DateTimeExport)\$($VMName)\*""" -RedirectStandardOutput "$($ExportPath)\$($DateTimeStart)\stdout.log" -RedirectStandardError "$($ExportPath)\$($DateTimeStart)\stderr.log" -ErrorAction Stop
         # TODO - Implement PSCredential for providing the encryption password.
-		LogWrite (Get-Content -Path "$($ExportPath)\$($DateTimeStart)\stdout.log")
-		$DateTimeStop = Get-Date -format "yyyy-MM-dd-THHmm"
-		LogWrite "Upload ended $($DateTimeStop)"
-		LogWrite "Cleanup ""$($ExportPath)\$($DateTimeExport)""" 
-		Remove-Item "$($ExportPath)\$($DateTimeExport)" -Recurse -Force -Confirm:$false -ErrorAction Stop
-	}
+        LogWrite (Get-Content -Path "$($ExportPath)\$($DateTimeStart)\stdout.log")
+        $DateTimeStop = Get-Date -format "yyyy-MM-dd-THHmm"
+        LogWrite "Upload ended $($DateTimeStop)"
+        LogWrite "Cleanup ""$($ExportPath)\$($DateTimeExport)""" 
+        Remove-Item "$($ExportPath)\$($DateTimeExport)" -Recurse -Force -Confirm:$false -ErrorAction Stop
+    }
 }
 catch {
     LogWrite $($Error[0].Exception.GetType().FullName)

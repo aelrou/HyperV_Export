@@ -1,9 +1,9 @@
 # HyperV_Export
 PowerShell script to export, encrypt, compress, and upload a Hyper-V VM backup
 
-Native Hyper-V export is not the most robust backup strategy, but it **is** reliable and free.
+Native Hyper-V export is not the most robust backup strategy, but it **is** reliable and subscription-free.
 
-Permit running PowerShell scripts on the host: *PowerShell* `Set-ExecutionPolicy RemoteSigned` Then Y to confirm  
+Permit running PowerShell scripts on a host: *PowerShell* `Set-ExecutionPolicy RemoteSigned` Then Y to confirm  
 Display a list of VMID: *PowerShell* `Get-VM | Select-Object VMName, VMID`  
 Run a script: *CMD* `"powershell.exe" -File "C:\HyperV_Export.ps1" -VMID "9623d59a-a9e9-40cf-a0fd-913248491d50"`  
 Run a script: *PowerShell* `& "C:\HyperV_Export.ps1" -VMID "9623d59a-a9e9-40cf-a0fd-913248491d50"`  
