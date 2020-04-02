@@ -1,5 +1,5 @@
 # Set-ExecutionPolicy RemoteSigned
-Param([string]$VMID)
+Param ([string]$VMID)
 <#  
     $ExportPath is the temporary storage space for uncompressed Hyper-V exports.
     If a VM is 500 GB, then the uncompressed Hyper-V export will also be 500 GB.
