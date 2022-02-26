@@ -8,7 +8,7 @@ Display a list of VMID: *PowerShell* `Get-VM | Select-Object VMName, VMID`
 Run a script: *CMD* `"powershell.exe" -File "C:\HyperV_Export.ps1" -VMID "9623d59a-a9e9-40cf-a0fd-913248491d50"`  
 Run a script: *PowerShell* `& "C:\HyperV_Export.ps1" -VMID "9623d59a-a9e9-40cf-a0fd-913248491d50"`  
 
-This PowerShell script is designed to run as a scheduled task with Administrative privileges on Windows Server 2012. To ensure that scheduled exports continue if a VM name changes, a VMID is used instead of a VMName. It has also been tested on Server 2012 **R2**, Server 2016, and Server 2019.
+This PowerShell script is designed to run as a scheduled task with Administrative privileges on Windows Server 2012. To ensure that scheduled exports continue if a VM name changes, a VMID is used instead of a VMName. It has also been tested on Server 2012 **R2**, Server 2016, Server 2019, and Server 2022.
 
 Live exports are not supported on Windows Server 2012 *(not R2)*, so a VM must be saved or shutdown before export. This script saves and exports a VM, then starts it again if it was running originally.
 
@@ -24,4 +24,4 @@ Once an export is complete and the network drive is connected, [7-Zip](https://w
  - The 7-Zip thread count: `"-mmt7"` uses 7 CPU cores. `"-mmt4"` uses 4 cores or 50% of an 8-core CPU.  
  - The 7-Zip encryption password (keep the double "" quotation marks): `""123456789ABCDEFGHijKLMNoPQRSTUVWXYZ""`  
 
-With minor modification this script will do live exports which are supported on Server 2012 **R2**, Server 2016, and Server 2019.
+Live exports which are supported on Server 2012 **R2**, Server 2016, Server 2019, and Server 2022
